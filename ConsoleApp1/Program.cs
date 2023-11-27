@@ -177,7 +177,6 @@ string  SelectLettre( string mot)
     motArray[randomemotArray2] = '_';
     motArray[randomemotArray3] = '_';
     mot = new string(motArray);
-    //Console.WriteLine($"LE FRUIT A TROUVER: {mot}");
     return mot;
 }
 void Comparaison(string mot)
