@@ -1,4 +1,8 @@
 ﻿
+using System;
+using System.Runtime.Intrinsics.Arm;
+using System.Text;
+
 Start();
 
 
@@ -94,6 +98,7 @@ void Compare(string Myelement, string UserElement)
     else
     {
         Console.WriteLine($"Votre Choix est {UserElement} et mon choix est {Myelement}. Vous gagnez la partie!");
+        Autrepartie();
     }
 }
 
@@ -102,37 +107,98 @@ bool Gagner(string Myelement, string UserElement)
     List<List<string>> Gagnant = new List<List<string>>
     {
         new List<string> { "ciseau", "papier"},
-        new List<string> { "papier", "roche" },
         new List<string> { "roche", "ciseau" },
+        new List<string> { "papier", "roche" },
     };
     foreach (var couple in Gagnant)
     {
-        if (couple.Contains(Myelement) && couple.Contains(UserElement))
+        if (couple[0] == Myelement && couple[1] == UserElement)
         {
             return true;
         }
     }
     return false;
 }
-
-//bool Perdre(string Myelement, string UserElement)
-//{
-// List<List<string>> Perdant = new List<List<string>>
-//{
-// new List<string> { "papier", "ciseau"},
-//new List<string> { "ciseau", "roche" },
-//new List<string> { "roche", "papier" },
-//};
-//foreach (var couple in Perdant)
-//{
-//  if (couple.Contains(Myelement) && couple.Contains(UserElement))
-//{
-//  return true;
-//}
-//}
-//return false;
-//}
+void Autrepartie()
+{
+    Console.WriteLine("Voulez-vous refaire une partie (O/N)?");
+    Console.Write("");
+    string reponse = Console.ReadLine()!;
+    do
+    {
+        switch (reponse)
+        {
+            case "O":
+                RochePapierCiseau();
+                break;
+            case "N":
+                Menu();
+                break;
+            default:
+                {
+                    Autrepartie();
+                }
+                break;
+        }
+    } while (reponse is not "N");
+}
 void Devinette()
 {
-
+    Console.WriteLine("-------------------------------------------------------------------");
+    Console.WriteLine("Bienvenue dans le devinette");
+    Console.WriteLine("-------------------------------------------------------------------");
+    Comparaison(ChoisirUnMot());
 }
+
+string ChoisirUnMot()
+{
+    Random rndm = new Random();
+    string[] mot = { "banane", "poire", "pomme" , "cerise" , "mangue" , "figue" , "tanguerine" , "fraise" , "framboise" , "bleuet" };
+    int randomemot = rndm.Next(mot.Length);
+    return mot[randomemot];
+}
+
+string  SelectLettre( string mot)
+{
+    Random rndo = new Random();
+    char[] motArray = mot.ToCharArray();
+    int randomemotArray1 = rndo.Next(mot.Length);
+    int randomemotArray2 = 0;
+    int randomemotArray3 = 0;
+    do
+    {
+        randomemotArray2 = rndo.Next(mot.Length);
+    } while (randomemotArray1.Equals(randomemotArray2));
+    do
+    {
+        randomemotArray3 = rndo.Next(mot.Length);
+    } while (randomemotArray1.Equals(randomemotArray3) && randomemotArray2.Equals(randomemotArray3));
+    motArray[randomemotArray1] = '_';
+    motArray[randomemotArray2] = '_';
+    motArray[randomemotArray3] = '_';
+    mot = new string(motArray);
+    //Console.WriteLine($"LE FRUIT A TROUVER: {mot}");
+    return mot;
+}
+void Comparaison(string mot)
+{
+    string motCache = SelectLettre(mot);
+    string motJoueur = "";
+    bool MotTrouve = false;
+    for (int i = 0; i < 3 && !MotTrouve; i++)
+    {
+        Console.WriteLine($"LE FRUIT A TROUVER: {motCache}");
+        Console.Write("");
+        motJoueur = Console.ReadLine()!;
+        MotTrouve = mot.Equals(motJoueur);
+        if (MotTrouve)
+        {
+            Console.WriteLine("Bravo! Vous avez trouvé le mot!");
+        }
+    }
+     Console.WriteLine($"Le mot était : {mot}");
+}
+
+
+
+
