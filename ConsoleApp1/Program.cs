@@ -8,8 +8,10 @@ Start();
 
 void Menu()
 {
+    Console.WriteLine("-------------------------------------------------------------------");
     Console.WriteLine("Veuillez choisir le jeu à jouer: \t");
-    Console.WriteLine("1- Roche/papier/ciseau  2- La dvinette  3- Quiter");
+    Console.WriteLine("1- Roche/papier/ciseau  2- La devinette  3- Quitter");
+    Console.WriteLine("-------------------------------------------------------------------");
     Console.Write("\t\n ");
 }
 
@@ -47,7 +49,9 @@ void afficherMessageErreur()
 
 void RochePapierCiseau()
 {
-    Console.WriteLine("Bienvenu dans le jeux roche/papier/ciseau...");
+    Console.WriteLine("-------------------------------------------------------------------");
+    Console.WriteLine("Bienvenue dans le jeux roche/papier/ciseau...");
+    Console.WriteLine("-------------------------------------------------------------------");
     string UserElement = ChoixDesElements();
     string Myelement = SelectElement();
     Compare(Myelement, UserElement);
@@ -89,15 +93,17 @@ void Compare(string Myelement, string UserElement)
 {
     if (Myelement.Equals(UserElement))
     {
-        Console.WriteLine($"Votre Choix est {UserElement} et mon choix est {Myelement}. La partie est nulle.");
+        Console.WriteLine("Partie nulle! nous avons choisis le même élément!");
+        Autrepartie();
     }
     else if (Gagner(Myelement, UserElement))
     {
-        Console.WriteLine($"Votre Choix est {UserElement} et mon choix est {Myelement}. Je gagne la partie!");
+        Console.WriteLine($"Votre choix est {UserElement} et mon choix est {Myelement}. Je gagne la partie!");
+        Autrepartie();
     }
     else
     {
-        Console.WriteLine($"Votre Choix est {UserElement} et mon choix est {Myelement}. Vous gagnez la partie!");
+        Console.WriteLine($"Votre choix est {UserElement} et mon choix est {Myelement}. Vous gagnez la partie!");
         Autrepartie();
     }
 }
@@ -131,8 +137,14 @@ void Autrepartie()
             case "O":
                 RochePapierCiseau();
                 break;
+            case "o":
+                RochePapierCiseau();
+                break;
             case "N":
-                Menu();
+                Start();
+                break;
+            case "n":
+                Start();
                 break;
             default:
                 {
@@ -140,7 +152,7 @@ void Autrepartie()
                 }
                 break;
         }
-    } while (reponse is not "N");
+    } while (reponse is not "N" && reponse is not "n");
 }
 void Devinette()
 {
@@ -190,12 +202,15 @@ void Comparaison(string mot)
         Console.Write("");
         motJoueur = Console.ReadLine()!;
         MotTrouve = mot.Equals(motJoueur);
+        if (i == 2)
+        {
+            Console.WriteLine($"Le mot était : {mot}");
+        }
         if (MotTrouve)
         {
             Console.WriteLine("Bravo! Vous avez trouvé le mot!");
         }
     }
-     Console.WriteLine($"Le mot était : {mot}");
 }
 
 
